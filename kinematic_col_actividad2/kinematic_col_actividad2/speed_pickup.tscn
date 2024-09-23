@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dkic8v35tdkk"]
+
+[ext_resource type="Script" path="res://speed_pickup.gd" id="1_t0mee"]
+[ext_resource type="Texture2D" uid="uid://bfiq1vsy1btdg" path="res://speed_sprite.png" id="2_nu1bl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dxwd1"]
+
+[node name="SpeedPickup" type="Area2D"]
+position = Vector2(550, 360)
+script = ExtResource("1_t0mee")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dxwd1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_nu1bl")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

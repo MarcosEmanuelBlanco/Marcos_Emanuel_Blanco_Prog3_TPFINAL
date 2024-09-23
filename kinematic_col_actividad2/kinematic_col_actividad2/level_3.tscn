@@ -1,0 +1,257 @@
+[gd_scene load_steps=24 format=3 uid="uid://bn8idof6rvqns"]
+
+[ext_resource type="PackedScene" uid="uid://bgx3rlc5xbaxu" path="res://player/player.tscn" id="1_3tf2v"]
+[ext_resource type="Script" path="res://level_3.gd" id="1_guwdx"]
+[ext_resource type="PackedScene" uid="uid://bpmfw6yc7cxu5" path="res://goal.tscn" id="2_vqivr"]
+[ext_resource type="PackedScene" uid="uid://6kxukrvgum7s" path="res://wall.tscn" id="3_h1k0l"]
+[ext_resource type="Script" path="res://slow_zone.gd" id="4_m8020"]
+[ext_resource type="Texture2D" uid="uid://c36svbdf1ocpd" path="res://slow_zone_sprite.png" id="6_fpk0c"]
+[ext_resource type="Script" path="res://kill_ball_path_follow_2d.gd" id="6_rdftn"]
+[ext_resource type="Script" path="res://kill_ball_path_follow_2d_2.gd" id="8_gmmpb"]
+[ext_resource type="PackedScene" uid="uid://dkic8v35tdkk" path="res://speed_pickup.tscn" id="10_qqrk1"]
+[ext_resource type="Texture2D" uid="uid://fsckpt1wpjlv" path="res://kill_ball_sprite.png" id="11_ob2kk"]
+[ext_resource type="PackedScene" uid="uid://g8jqxn4gc4c0" path="res://level_completed.tscn" id="12_u2v7q"]
+[ext_resource type="PackedScene" uid="uid://bilhyhxgn8vtb" path="res://level_failed.tscn" id="13_avogt"]
+[ext_resource type="Script" path="res://help_text_3.gd" id="13_lyxwo"]
+[ext_resource type="AudioStream" uid="uid://c4f4y78cxrkgg" path="res://cute-level-up-3-189853.mp3" id="14_2vt6x"]
+[ext_resource type="AudioStream" uid="uid://ff6ohslpt0om" path="res://vinyl-stop-sound-effect-241388.mp3" id="15_aj72e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_owvsv"]
+
+[sub_resource type="Curve2D" id="Curve2D_bm3sw"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 479, 363, 0, 0, 0, 0, 456, 312, 0, 0, 0, 0, 429, 295, 0, 0, 0, 0, 402, 289, 0, 0, 0, 0, 368, 295, 0, 0, 0, 0, 342, 307, 0, 0, 0, 0, 329, 330, 0, 0, 0, 0, 325, 369, 0, 0, 0, 0, 337, 395, 0, 0, 0, 0, 371, 420, 0, 0, 0, 0, 425, 421, 0, 0, 0, 0, 455, 410, 0, 0, 0, 0, 478, 365)
+}
+point_count = 13
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0ujhq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8kyur"]
+
+[sub_resource type="Animation" id="Animation_gbp5t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_yucrw"]
+resource_name = "killball_1_movement"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oopps"]
+_data = {
+"RESET": SubResource("Animation_gbp5t"),
+"killball_1_movement": SubResource("Animation_yucrw")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q2w58"]
+
+[node name="level3" type="Node2D"]
+script = ExtResource("1_guwdx")
+
+[node name="player" parent="." instance=ExtResource("1_3tf2v")]
+position = Vector2(140, 360)
+
+[node name="goal" parent="." instance=ExtResource("2_vqivr")]
+position = Vector2(1000, 360)
+
+[node name="wall" parent="." instance=ExtResource("3_h1k0l")]
+position = Vector2(600, 240)
+rotation = 1.5708
+scale = Vector2(1, 60)
+
+[node name="wall2" parent="." instance=ExtResource("3_h1k0l")]
+position = Vector2(600, 480)
+rotation = 1.5708
+scale = Vector2(1, 60)
+
+[node name="wall3" parent="." instance=ExtResource("3_h1k0l")]
+position = Vector2(110, 360)
+scale = Vector2(1, 20)
+
+[node name="wall4" parent="." instance=ExtResource("3_h1k0l")]
+position = Vector2(1090, 360)
+scale = Vector2(1, 20)
+
+[node name="SlowZone" type="Area2D" parent="."]
+position = Vector2(400, 360)
+script = ExtResource("4_m8020")
+slow_power = 40
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlowZone"]
+scale = Vector2(10, 10)
+shape = SubResource("RectangleShape2D_owvsv")
+
+[node name="Sprite2D" type="Sprite2D" parent="SlowZone"]
+z_index = -1
+texture_filter = 1
+scale = Vector2(6, 6)
+texture = ExtResource("6_fpk0c")
+
+[node name="SlowZone2" type="Area2D" parent="."]
+position = Vector2(700, 360)
+script = ExtResource("4_m8020")
+slow_power = 40
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlowZone2"]
+scale = Vector2(10, 10)
+shape = SubResource("RectangleShape2D_owvsv")
+
+[node name="Sprite2D" type="Sprite2D" parent="SlowZone2"]
+z_index = -1
+texture_filter = 1
+scale = Vector2(6, 6)
+texture = ExtResource("6_fpk0c")
+
+[node name="SpeedPickup" parent="." instance=ExtResource("10_qqrk1")]
+
+[node name="level_completed" parent="." instance=ExtResource("12_u2v7q")]
+offset_left = 450.0
+offset_top = 100.0
+offset_right = 691.0
+offset_bottom = 201.0
+
+[node name="level_failed" parent="." instance=ExtResource("13_avogt")]
+offset_left = 480.0
+offset_top = 100.0
+offset_right = 670.0
+offset_bottom = 175.0
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_bm3sw")
+
+[node name="KillBall1PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(479, 363)
+rotation = -1.99447
+script = ExtResource("6_rdftn")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Path2D/KillBall1PathFollow2D"]
+
+[node name="Area2D" type="Area2D" parent="Path2D/KillBall1PathFollow2D/CharacterBody2D"]
+scale = Vector2(3, 3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/KillBall1PathFollow2D/CharacterBody2D/Area2D"]
+shape = SubResource("CircleShape2D_0ujhq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/KillBall1PathFollow2D/CharacterBody2D"]
+shape = SubResource("CircleShape2D_8kyur")
+
+[node name="Sprite2D" type="Sprite2D" parent="Path2D/KillBall1PathFollow2D/CharacterBody2D"]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("11_ob2kk")
+
+[node name="KillBall1AnimationPlayer" type="AnimationPlayer" parent="Path2D/KillBall1PathFollow2D"]
+libraries = {
+"": SubResource("AnimationLibrary_oopps")
+}
+
+[node name="Path2D2" type="Path2D" parent="."]
+position = Vector2(300, 0)
+curve = SubResource("Curve2D_bm3sw")
+
+[node name="KillBall2PathFollow2D" type="PathFollow2D" parent="Path2D2"]
+position = Vector2(479, 363)
+rotation = -1.99447
+script = ExtResource("8_gmmpb")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Path2D2/KillBall2PathFollow2D"]
+
+[node name="Area2D" type="Area2D" parent="Path2D2/KillBall2PathFollow2D/CharacterBody2D"]
+scale = Vector2(3, 3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D2/KillBall2PathFollow2D/CharacterBody2D/Area2D"]
+shape = SubResource("CircleShape2D_0ujhq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D2/KillBall2PathFollow2D/CharacterBody2D"]
+shape = SubResource("CircleShape2D_8kyur")
+
+[node name="Sprite2D" type="Sprite2D" parent="Path2D2/KillBall2PathFollow2D/CharacterBody2D"]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("11_ob2kk")
+
+[node name="KillBall2AnimationPlayer" type="AnimationPlayer" parent="Path2D2/KillBall2PathFollow2D"]
+libraries = {
+"": SubResource("AnimationLibrary_oopps")
+}
+
+[node name="score" type="Label" parent="."]
+offset_top = 25.0
+offset_right = 63.0
+offset_bottom = 48.0
+text = "Puntos: "
+
+[node name="audio_text" type="Label" parent="."]
+offset_top = 3.0
+offset_right = 110.0
+offset_bottom = 26.0
+text = "Sonido(m): Activo"
+
+[node name="InstructionsChangeTrigger" type="Area2D" parent="."]
+position = Vector2(520, 360)
+scale = Vector2(1, 10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstructionsChangeTrigger"]
+shape = SubResource("RectangleShape2D_q2w58")
+
+[node name="help_text_3" type="Label" parent="."]
+offset_left = 350.0
+offset_top = 150.0
+offset_right = 812.0
+offset_bottom = 173.0
+text = "Esas zonas son pegajosas y te van a ralentizar severamente."
+script = ExtResource("13_lyxwo")
+
+[node name="level_completed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_2vt6x")
+
+[node name="level_failed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_aj72e")
+
+[connection signal="death" from="player" to="." method="_on_player_death"]
+[connection signal="death" from="player" to="SlowZone" method="_on_player_death"]
+[connection signal="death" from="player" to="SlowZone2" method="_on_player_death"]
+[connection signal="body_entered" from="goal" to="." method="_on_goal_body_entered"]
+[connection signal="body_entered" from="SlowZone" to="player" method="_on_slow_zone_body_entered"]
+[connection signal="body_entered" from="SlowZone" to="SlowZone" method="_on_body_entered"]
+[connection signal="body_exited" from="SlowZone" to="player" method="_on_slow_zone_body_exited"]
+[connection signal="body_exited" from="SlowZone" to="SlowZone" method="_on_body_exited"]
+[connection signal="body_entered" from="SlowZone2" to="player" method="_on_slow_zone_2_body_entered"]
+[connection signal="body_entered" from="SlowZone2" to="SlowZone2" method="_on_body_entered"]
+[connection signal="body_exited" from="SlowZone2" to="player" method="_on_slow_zone_2_body_exited"]
+[connection signal="body_exited" from="SlowZone2" to="SlowZone2" method="_on_body_exited"]
+[connection signal="body_entered" from="SpeedPickup" to="player" method="_on_speed_pickup_body_entered"]
+[connection signal="body_entered" from="Path2D/KillBall1PathFollow2D/CharacterBody2D/Area2D" to="player" method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Path2D2/KillBall2PathFollow2D/CharacterBody2D/Area2D" to="player" method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="InstructionsChangeTrigger" to="help_text_3" method="_on_instructions_change_trigger_body_entered"]
+
+[editable path="player"]
+[editable path="goal"]
+[editable path="wall"]
+[editable path="wall2"]
+[editable path="wall3"]
+[editable path="wall4"]
+[editable path="SpeedPickup"]

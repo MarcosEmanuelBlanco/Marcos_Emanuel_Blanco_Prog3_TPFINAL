@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bilhyhxgn8vtb"]
+
+[node name="level_failed" type="Label"]
+visible = false
+offset_left = -198.0
+offset_top = 2.0
+offset_right = -110.0
+offset_bottom = 25.0
+text = "Nivel Fallido
+
+Presiona R para reiniciar"
+horizontal_alignment = 1

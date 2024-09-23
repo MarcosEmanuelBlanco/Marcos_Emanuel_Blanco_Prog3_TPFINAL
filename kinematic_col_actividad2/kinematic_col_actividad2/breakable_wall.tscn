@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://d11xg3chutt1s"]
+
+[ext_resource type="Script" path="res://breakable_wall.gd" id="1_mgwcx"]
+[ext_resource type="Texture2D" uid="uid://dmuuuj2jjwffb" path="res://force_field_sprite.png" id="2_fio48"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h451e"]
+
+[node name="BreakableWall" type="CharacterBody2D" groups=["breakable_wall"]]
+position = Vector2(600, 450)
+scale = Vector2(3, 1)
+script = ExtResource("1_mgwcx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_h451e")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_fio48")

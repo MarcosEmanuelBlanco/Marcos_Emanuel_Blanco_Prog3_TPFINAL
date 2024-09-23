@@ -1,0 +1,64 @@
+[gd_scene load_steps=13 format=3 uid="uid://bgx3rlc5xbaxu"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1"]
+[ext_resource type="Shader" path="res://player/player_colors.gdshader" id="1_cxccn"]
+[ext_resource type="PackedScene" uid="uid://bge61axt58fxc" path="res://projectile.tscn" id="2_b3uex"]
+[ext_resource type="Texture2D" uid="uid://blkco3ht8sws3" path="res://player_sprite.png" id="4_b4vie"]
+[ext_resource type="Script" path="res://player/sprite.gd" id="5_btuth"]
+[ext_resource type="AudioStream" uid="uid://dlmkkpjiuh1s8" path="res://retro-laser-1-236669.mp3" id="6_gtkm2"]
+[ext_resource type="AudioStream" uid="uid://sqh7aa7bqyjt" path="res://retro-explode-1-236678.mp3" id="7_q6th2"]
+[ext_resource type="AudioStream" uid="uid://dplptgok33rei" path="res://retro-coin-4-236671.mp3" id="8_iukjv"]
+[ext_resource type="AudioStream" uid="uid://ghpjnl4j2c65" path="res://woosh-building-109596.mp3" id="9_msoqy"]
+[ext_resource type="AudioStream" uid="uid://c4smpy7x2d1be" path="res://stab-f-01-brvhrtz-224599.mp3" id="10_orxgh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vwbuy"]
+shader = ExtResource("1_cxccn")
+shader_parameter/blanco_base = Color(1, 1, 1, 1)
+shader_parameter/cambiar_blanco = Color(1, 1, 1, 1)
+shader_parameter/edge = 0.1
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(15.8, 15.8)
+
+[node name="player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1")
+projectile = ExtResource("2_b3uex")
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_vwbuy")
+texture = ExtResource("4_b4vie")
+script = ExtResource("5_btuth")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
+
+[node name="fire_point" type="Marker2D" parent="."]
+position = Vector2(20, 0)
+
+[node name="SpeedPickupTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="DamagePickupTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="gun_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_gtkm2")
+
+[node name="super_gun_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_q6th2")
+
+[node name="pickup_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_iukjv")
+
+[node name="speed_boost_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_msoqy")
+
+[node name="damage_boost_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_orxgh")
+
+[connection signal="damage_pickup_contact" from="." to="sprite" method="_on_player_damage_pickup_contact"]
+[connection signal="damage_pickup_expired" from="." to="sprite" method="_on_player_damage_pickup_expired"]
+[connection signal="death" from="." to="." method="_on_death"]
+[connection signal="speed_pickup_contact" from="." to="sprite" method="_on_player_speed_pickup_contact"]
+[connection signal="speed_pickup_expired" from="." to="sprite" method="_on_player_speed_pickup_expired"]

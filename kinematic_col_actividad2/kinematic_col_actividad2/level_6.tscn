@@ -1,0 +1,707 @@
+[gd_scene load_steps=35 format=3 uid="uid://ckejex1jdkxp3"]
+
+[ext_resource type="PackedScene" uid="uid://bgx3rlc5xbaxu" path="res://player/player.tscn" id="1_by0dt"]
+[ext_resource type="Script" path="res://level_6.gd" id="1_illf3"]
+[ext_resource type="PackedScene" uid="uid://bpmfw6yc7cxu5" path="res://goal.tscn" id="2_af16i"]
+[ext_resource type="PackedScene" uid="uid://6kxukrvgum7s" path="res://wall.tscn" id="3_lw24i"]
+[ext_resource type="Texture2D" uid="uid://c36svbdf1ocpd" path="res://slow_zone_sprite.png" id="3_mvifo"]
+[ext_resource type="PackedScene" uid="uid://g8jqxn4gc4c0" path="res://level_completed.tscn" id="4_jpboj"]
+[ext_resource type="PackedScene" uid="uid://bilhyhxgn8vtb" path="res://level_failed.tscn" id="5_rwymg"]
+[ext_resource type="PackedScene" uid="uid://d11xg3chutt1s" path="res://breakable_wall.tscn" id="6_f2oi1"]
+[ext_resource type="PackedScene" uid="uid://dlf21ej52fq75" path="res://big_enemy.tscn" id="7_0t1yw"]
+[ext_resource type="PackedScene" uid="uid://dy6v7kqtiyiub" path="res://big_enemy_trigger.tscn" id="8_4hus5"]
+[ext_resource type="Script" path="res://spinner.gd" id="9_vxyj8"]
+[ext_resource type="Script" path="res://slow_zone.gd" id="11_icsd8"]
+[ext_resource type="PackedScene" uid="uid://bpmhh5xcp8p8x" path="res://damage_pickup.tscn" id="12_thydo"]
+[ext_resource type="Texture2D" uid="uid://bh0q4ssubrph5" path="res://spike_stick_sprite.png" id="13_qwjl6"]
+[ext_resource type="Script" path="res://opponent_1_path.gd" id="15_s4l7h"]
+[ext_resource type="PackedScene" uid="uid://cj2htwf841733" path="res://opponent.tscn" id="15_wbaqe"]
+[ext_resource type="Script" path="res://opponent.gd" id="17_3hbpw"]
+[ext_resource type="Script" path="res://opponent_2_path.gd" id="18_icdwf"]
+[ext_resource type="Script" path="res://opponent2.gd" id="19_iqkqf"]
+[ext_resource type="AudioStream" uid="uid://0ckglbqoud3p" path="res://creature-or-monster-growl-sound-effect-1-239698.mp3" id="20_hehhw"]
+[ext_resource type="AudioStream" uid="uid://6wj38ejgsqyh" path="res://retro-hurt-2-236675.mp3" id="21_k77la"]
+[ext_resource type="AudioStream" uid="uid://c4f4y78cxrkgg" path="res://cute-level-up-3-189853.mp3" id="22_wjiqy"]
+[ext_resource type="AudioStream" uid="uid://ff6ohslpt0om" path="res://vinyl-stop-sound-effect-241388.mp3" id="23_505dn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i52eo"]
+
+[sub_resource type="Animation" id="Animation_1kqwn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 3
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_837w5"]
+resource_name = "spin"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 3
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.628319, 1.25664, 1.88496, 2.51327, 3.14159, 3.76991, 4.39823, 5.02655, 5.65487, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f7bc6"]
+_data = {
+"RESET": SubResource("Animation_1kqwn"),
+"spin": SubResource("Animation_837w5")
+}
+
+[sub_resource type="Curve2D" id="Curve2D_2j16d"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 735, 102, 0, 0, 0, 0, 785, 154, 0, 0, 0, 0, 969, 160, 0, 0, 0, 0, 1069, 184, 0, 0, 0, 0, 1099, 296, 0, 0, 0, 0, 1101, 299)
+}
+point_count = 6
+
+[sub_resource type="Animation" id="Animation_nygl0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_qpv57"]
+resource_name = "opponent1movement"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_womno"]
+_data = {
+"RESET": SubResource("Animation_nygl0"),
+"opponent1movement": SubResource("Animation_qpv57")
+}
+
+[sub_resource type="Animation" id="Animation_7iifh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_edvn6"]
+resource_name = "opponent_2_movement"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xwioa"]
+_data = {
+"RESET": SubResource("Animation_7iifh"),
+"opponent_2_movement": SubResource("Animation_edvn6")
+}
+
+[node name="level6" type="Node2D"]
+script = ExtResource("1_illf3")
+big_enemy_value = 100
+opponent_escape_value = 50
+
+[node name="SlowZone" type="Area2D" parent="."]
+z_index = -1
+position = Vector2(850, 300)
+scale = Vector2(5, 5)
+script = ExtResource("11_icsd8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlowZone"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="SlowZone"]
+texture_filter = 1
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_mvifo")
+
+[node name="player" parent="." instance=ExtResource("1_by0dt")]
+position = Vector2(50, 300)
+
+[node name="goal" parent="." instance=ExtResource("2_af16i")]
+position = Vector2(1100, 300)
+
+[node name="wall" parent="." instance=ExtResource("3_lw24i")]
+position = Vector2(15, 300)
+scale = Vector2(1, 30)
+
+[node name="wall3" parent="." instance=ExtResource("3_lw24i")]
+position = Vector2(1135, 300)
+scale = Vector2(1, 30)
+
+[node name="wall2" parent="." instance=ExtResource("3_lw24i")]
+position = Vector2(575, 70)
+rotation = 1.5708
+scale = Vector2(1, 69)
+
+[node name="wall4" parent="." instance=ExtResource("3_lw24i")]
+position = Vector2(575, 530)
+rotation = 1.5708
+scale = Vector2(1, 69)
+
+[node name="level_completed" parent="." instance=ExtResource("4_jpboj")]
+offset_left = 720.0
+offset_top = 120.0
+offset_right = 910.0
+offset_bottom = 195.0
+text = "Juego Completado
+
+Presiona R para reiniciar 
+o ENTER para volver
+al menu de inicio"
+
+[node name="level_failed" parent="." instance=ExtResource("5_rwymg")]
+offset_left = 720.0
+offset_top = 120.0
+offset_right = 910.0
+offset_bottom = 195.0
+
+[node name="BreakableWall" parent="." instance=ExtResource("6_f2oi1")]
+position = Vector2(1075, 250)
+
+[node name="CollisionShape2D" parent="BreakableWall" index="0"]
+scale = Vector2(1.5, 1.5)
+
+[node name="BreakableWall2" parent="." instance=ExtResource("6_f2oi1")]
+position = Vector2(1075, 350)
+
+[node name="CollisionShape2D" parent="BreakableWall2" index="0"]
+scale = Vector2(1.5, 1.5)
+
+[node name="BreakableWall3" parent="." instance=ExtResource("6_f2oi1")]
+position = Vector2(1000, 200)
+rotation = 1.5708
+scale = Vector2(6, 1)
+
+[node name="CollisionShape2D" parent="BreakableWall3" index="0"]
+scale = Vector2(1.5, 1.5)
+
+[node name="BreakableWall4" parent="." instance=ExtResource("6_f2oi1")]
+position = Vector2(1000, 400)
+rotation = 1.5708
+scale = Vector2(6, 1)
+
+[node name="CollisionShape2D" parent="BreakableWall4" index="0"]
+scale = Vector2(1.5, 1.5)
+
+[node name="BigEnemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_0t1yw")]
+position = Vector2(1070, 175)
+rotation = 3.14159
+player = NodePath("../player")
+speed = 3
+
+[node name="BigEnemy2" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_0t1yw")]
+position = Vector2(1070, 425)
+rotation = 3.14159
+player = NodePath("../player")
+speed = 3
+
+[node name="BigEnemyTrigger" parent="." instance=ExtResource("8_4hus5")]
+position = Vector2(780, 300)
+rotation = 1.5708
+scale = Vector2(22, 1)
+
+[node name="Spinner" type="Node2D" parent="."]
+position = Vector2(450, 300)
+script = ExtResource("9_vxyj8")
+
+[node name="Spikes" type="Area2D" parent="Spinner"]
+z_index = -1
+position = Vector2(0, -50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner/Spikes"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner/Spikes"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes2" type="Area2D" parent="Spinner"]
+z_index = -1
+position = Vector2(-50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner/Spikes2"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner/Spikes2"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes3" type="Area2D" parent="Spinner"]
+z_index = -1
+position = Vector2(50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner/Spikes3"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner/Spikes3"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes4" type="Area2D" parent="Spinner"]
+z_index = -1
+position = Vector2(0, 50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner/Spikes4"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner/Spikes4"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="SpinnerAnimationPlayer" type="AnimationPlayer" parent="Spinner"]
+libraries = {
+"": SubResource("AnimationLibrary_f7bc6")
+}
+speed_scale = 0.2
+
+[node name="Spinner2" type="Node2D" parent="."]
+position = Vector2(300, 190)
+script = ExtResource("9_vxyj8")
+
+[node name="Spikes" type="Area2D" parent="Spinner2"]
+z_index = -1
+position = Vector2(0, -50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner2/Spikes"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner2/Spikes"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes2" type="Area2D" parent="Spinner2"]
+z_index = -1
+position = Vector2(-50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner2/Spikes2"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner2/Spikes2"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes3" type="Area2D" parent="Spinner2"]
+z_index = -1
+position = Vector2(50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner2/Spikes3"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner2/Spikes3"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes4" type="Area2D" parent="Spinner2"]
+z_index = -1
+position = Vector2(0, 50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner2/Spikes4"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner2/Spikes4"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="SpinnerAnimationPlayer" type="AnimationPlayer" parent="Spinner2"]
+libraries = {
+"": SubResource("AnimationLibrary_f7bc6")
+}
+speed_scale = 0.2
+
+[node name="Spinner3" type="Node2D" parent="."]
+position = Vector2(600, 190)
+script = ExtResource("9_vxyj8")
+
+[node name="Spikes" type="Area2D" parent="Spinner3"]
+z_index = -1
+position = Vector2(0, -50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner3/Spikes"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner3/Spikes"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes2" type="Area2D" parent="Spinner3"]
+z_index = -1
+position = Vector2(-50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner3/Spikes2"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner3/Spikes2"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes3" type="Area2D" parent="Spinner3"]
+z_index = -1
+position = Vector2(50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner3/Spikes3"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner3/Spikes3"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes4" type="Area2D" parent="Spinner3"]
+z_index = -1
+position = Vector2(0, 50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner3/Spikes4"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner3/Spikes4"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="SpinnerAnimationPlayer" type="AnimationPlayer" parent="Spinner3"]
+libraries = {
+"": SubResource("AnimationLibrary_f7bc6")
+}
+speed_scale = 0.2
+
+[node name="Spinner4" type="Node2D" parent="."]
+position = Vector2(600, 410)
+script = ExtResource("9_vxyj8")
+
+[node name="Spikes" type="Area2D" parent="Spinner4"]
+z_index = -1
+position = Vector2(0, -50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner4/Spikes"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner4/Spikes"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes2" type="Area2D" parent="Spinner4"]
+z_index = -1
+position = Vector2(-50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner4/Spikes2"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner4/Spikes2"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes3" type="Area2D" parent="Spinner4"]
+z_index = -1
+position = Vector2(50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner4/Spikes3"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner4/Spikes3"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes4" type="Area2D" parent="Spinner4"]
+z_index = -1
+position = Vector2(0, 50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner4/Spikes4"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner4/Spikes4"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="SpinnerAnimationPlayer" type="AnimationPlayer" parent="Spinner4"]
+libraries = {
+"": SubResource("AnimationLibrary_f7bc6")
+}
+speed_scale = 0.2
+
+[node name="Spinner5" type="Node2D" parent="."]
+position = Vector2(300, 410)
+script = ExtResource("9_vxyj8")
+
+[node name="Spikes" type="Area2D" parent="Spinner5"]
+z_index = -1
+position = Vector2(0, -50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner5/Spikes"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner5/Spikes"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes2" type="Area2D" parent="Spinner5"]
+z_index = -1
+position = Vector2(-50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner5/Spikes2"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner5/Spikes2"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes3" type="Area2D" parent="Spinner5"]
+z_index = -1
+position = Vector2(50, 0)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner5/Spikes3"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner5/Spikes3"]
+texture_filter = 1
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="Spikes4" type="Area2D" parent="Spinner5"]
+z_index = -1
+position = Vector2(0, 50)
+scale = Vector2(1, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner5/Spikes4"]
+shape = SubResource("RectangleShape2D_i52eo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spinner5/Spikes4"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(1.2, 0.25)
+texture = ExtResource("13_qwjl6")
+
+[node name="SpinnerAnimationPlayer" type="AnimationPlayer" parent="Spinner5"]
+libraries = {
+"": SubResource("AnimationLibrary_f7bc6")
+}
+speed_scale = 0.2
+
+[node name="DamagePickup" parent="." instance=ExtResource("12_thydo")]
+position = Vector2(850, 300)
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_2j16d")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(735, 102)
+rotation = 0.805003
+script = ExtResource("15_s4l7h")
+
+[node name="opponent" parent="Path2D/PathFollow2D" groups=["opponent"] instance=ExtResource("15_wbaqe")]
+script = ExtResource("17_3hbpw")
+
+[node name="Opponent1AnimPlayer" type="AnimationPlayer" parent="Path2D/PathFollow2D"]
+libraries = {
+"": SubResource("AnimationLibrary_womno")
+}
+speed_scale = 0.03
+
+[node name="Path2D2" type="Path2D" parent="."]
+position = Vector2(0, 601)
+scale = Vector2(1, -1)
+curve = SubResource("Curve2D_2j16d")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D2"]
+position = Vector2(735, 102)
+rotation = 0.805003
+script = ExtResource("18_icdwf")
+
+[node name="opponent" parent="Path2D2/PathFollow2D" groups=["opponent"] instance=ExtResource("15_wbaqe")]
+script = ExtResource("19_iqkqf")
+
+[node name="Opponent2AnimPlayer" type="AnimationPlayer" parent="Path2D2/PathFollow2D"]
+libraries = {
+"": SubResource("AnimationLibrary_xwioa")
+}
+speed_scale = 0.03
+
+[node name="score" type="Label" parent="."]
+offset_top = 21.0
+offset_right = 63.0
+offset_bottom = 44.0
+text = "Puntos: "
+
+[node name="audio_text" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Sonido(m): Activo"
+
+[node name="big_enemy_death_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_hehhw")
+
+[node name="force_field_break_sound" type="AudioStreamPlayer" parent="."]
+
+[node name="opponent_death_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("21_k77la")
+
+[node name="level_completed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("22_wjiqy")
+
+[node name="level_failed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("23_505dn")
+
+[connection signal="body_entered" from="SlowZone" to="SlowZone" method="_on_body_entered"]
+[connection signal="body_entered" from="SlowZone" to="player" method="_on_slow_zone_body_entered"]
+[connection signal="body_exited" from="SlowZone" to="SlowZone" method="_on_body_exited"]
+[connection signal="body_exited" from="SlowZone" to="player" method="_on_slow_zone_body_exited"]
+[connection signal="death" from="player" to="." method="_on_player_death"]
+[connection signal="death" from="player" to="SlowZone" method="_on_player_death"]
+[connection signal="body_entered" from="goal" to="." method="_on_goal_body_entered"]
+[connection signal="body_entered" from="goal" to="Path2D/PathFollow2D/opponent" method="_on_goal_body_entered"]
+[connection signal="body_entered" from="goal" to="Path2D2/PathFollow2D/opponent" method="_on_goal_body_entered"]
+[connection signal="destroyed" from="BreakableWall" to="." method="_on_breakable_wall_destroyed"]
+[connection signal="destroyed" from="BreakableWall2" to="." method="_on_breakable_wall_2_destroyed"]
+[connection signal="destroyed" from="BreakableWall3" to="." method="_on_breakable_wall_3_destroyed"]
+[connection signal="destroyed" from="BreakableWall4" to="." method="_on_breakable_wall_4_destroyed"]
+[connection signal="give_score" from="BigEnemy" to="." method="_on_big_enemy_give_score"]
+[connection signal="give_score" from="BigEnemy2" to="." method="_on_big_enemy_2_give_score"]
+[connection signal="body_entered" from="BigEnemy2/Area2D" to="Path2D/PathFollow2D/opponent" method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="BigEnemyTrigger" to="BigEnemy" method="_on_big_enemy_trigger_body_entered"]
+[connection signal="body_entered" from="BigEnemyTrigger" to="BigEnemy2" method="_on_big_enemy_trigger_body_entered"]
+[connection signal="body_entered" from="BigEnemyTrigger" to="BigEnemyTrigger" method="_on_body_entered"]
+[connection signal="body_entered" from="Spinner/Spikes" to="player" method="_on_spikes_body_entered"]
+[connection signal="body_entered" from="Spinner/Spikes2" to="player" method="_on_spikes_2_body_entered"]
+[connection signal="body_entered" from="Spinner/Spikes3" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner/Spikes4" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner/Spikes4" to="player" method="_on_spikes_4_body_entered"]
+[connection signal="body_entered" from="Spinner2/Spikes" to="player" method="_on_spikes_body_entered"]
+[connection signal="body_entered" from="Spinner2/Spikes2" to="player" method="_on_spikes_2_body_entered"]
+[connection signal="body_entered" from="Spinner2/Spikes3" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner2/Spikes4" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner2/Spikes4" to="player" method="_on_spikes_4_body_entered"]
+[connection signal="body_entered" from="Spinner3/Spikes" to="player" method="_on_spikes_body_entered"]
+[connection signal="body_entered" from="Spinner3/Spikes2" to="player" method="_on_spikes_2_body_entered"]
+[connection signal="body_entered" from="Spinner3/Spikes3" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner3/Spikes4" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner3/Spikes4" to="player" method="_on_spikes_4_body_entered"]
+[connection signal="body_entered" from="Spinner4/Spikes" to="player" method="_on_spikes_body_entered"]
+[connection signal="body_entered" from="Spinner4/Spikes2" to="player" method="_on_spikes_2_body_entered"]
+[connection signal="body_entered" from="Spinner4/Spikes3" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner4/Spikes4" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner4/Spikes4" to="player" method="_on_spikes_4_body_entered"]
+[connection signal="body_entered" from="Spinner5/Spikes" to="player" method="_on_spikes_body_entered"]
+[connection signal="body_entered" from="Spinner5/Spikes2" to="player" method="_on_spikes_2_body_entered"]
+[connection signal="body_entered" from="Spinner5/Spikes3" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner5/Spikes4" to="player" method="_on_spikes_3_body_entered"]
+[connection signal="body_entered" from="Spinner5/Spikes4" to="player" method="_on_spikes_4_body_entered"]
+[connection signal="body_entered" from="DamagePickup" to="player" method="_on_damage_pickup_body_entered"]
+[connection signal="dead" from="Path2D/PathFollow2D/opponent" to="." method="_on_opponent_dead"]
+[connection signal="gone" from="Path2D/PathFollow2D/opponent" to="." method="_on_opponent_gone"]
+[connection signal="dead" from="Path2D2/PathFollow2D/opponent" to="." method="_on_opponent_dead"]
+[connection signal="gone2" from="Path2D2/PathFollow2D/opponent" to="." method="_on_opponent_gone_2"]
+
+[editable path="player"]
+[editable path="goal"]
+[editable path="wall"]
+[editable path="wall3"]
+[editable path="wall2"]
+[editable path="wall4"]
+[editable path="BreakableWall"]
+[editable path="BreakableWall2"]
+[editable path="BreakableWall3"]
+[editable path="BreakableWall4"]
+[editable path="BigEnemy"]
+[editable path="BigEnemy2"]
+[editable path="BigEnemyTrigger"]
+[editable path="Path2D/PathFollow2D/opponent"]
+[editable path="Path2D2/PathFollow2D/opponent"]

@@ -1,0 +1,391 @@
+[gd_scene load_steps=36 format=3 uid="uid://in6glv1c0lqw"]
+
+[ext_resource type="PackedScene" uid="uid://bgx3rlc5xbaxu" path="res://player/player.tscn" id="1_2gn1b"]
+[ext_resource type="Script" path="res://level_2.gd" id="1_kkvan"]
+[ext_resource type="PackedScene" uid="uid://6kxukrvgum7s" path="res://wall.tscn" id="2_f77kn"]
+[ext_resource type="PackedScene" uid="uid://bpmfw6yc7cxu5" path="res://goal.tscn" id="3_ctnsv"]
+[ext_resource type="PackedScene" uid="uid://g8jqxn4gc4c0" path="res://level_completed.tscn" id="4_oj5uh"]
+[ext_resource type="PackedScene" uid="uid://bilhyhxgn8vtb" path="res://level_failed.tscn" id="5_sedbm"]
+[ext_resource type="Script" path="res://opponent_1_path.gd" id="6_54pn4"]
+[ext_resource type="PackedScene" uid="uid://cj2htwf841733" path="res://opponent.tscn" id="6_c2ruq"]
+[ext_resource type="Script" path="res://opponent.gd" id="8_rpnvx"]
+[ext_resource type="Script" path="res://opponent_2_path.gd" id="8_t31xe"]
+[ext_resource type="Script" path="res://spikes.gd" id="9_wwotq"]
+[ext_resource type="Script" path="res://opponent2.gd" id="10_6iqmq"]
+[ext_resource type="Script" path="res://button.gd" id="11_463dq"]
+[ext_resource type="Texture2D" uid="uid://dvkelllpatkpp" path="res://spikes_sprite.png" id="13_fxn4m"]
+[ext_resource type="Texture2D" uid="uid://ccl2gs125ev4n" path="res://pad_sprite.png" id="15_5vnj5"]
+[ext_resource type="PackedScene" uid="uid://cgre4vurhqs34" path="res://enemy.tscn" id="15_i5nk2"]
+[ext_resource type="PackedScene" uid="uid://237wove5frar" path="res://enemy_spawner.tscn" id="16_4syhj"]
+[ext_resource type="Script" path="res://enemylevel21.gd" id="16_n7c4d"]
+[ext_resource type="Script" path="res://help_text_2.gd" id="19_jx7aw"]
+[ext_resource type="Texture2D" uid="uid://bich25u7247qe" path="res://wire_sprite.png" id="20_ypnp5"]
+[ext_resource type="AudioStream" uid="uid://6wj38ejgsqyh" path="res://retro-hurt-2-236675.mp3" id="21_j56my"]
+[ext_resource type="AudioStream" uid="uid://n1tc6w3qk0ei" path="res://retro-explode-2-236688.mp3" id="22_4kwq2"]
+[ext_resource type="AudioStream" uid="uid://c4f4y78cxrkgg" path="res://cute-level-up-3-189853.mp3" id="23_4svhd"]
+[ext_resource type="AudioStream" uid="uid://ff6ohslpt0om" path="res://vinyl-stop-sound-effect-241388.mp3" id="24_ffaxf"]
+
+[sub_resource type="Curve2D" id="Curve2D_qu41w"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 523, 588, 0, 0, 0, 0, 523, 467, 0, 0, 0, 0, 520, 350, 0, 0, 0, 0, 482, 297, 0, 0, 0, 0, 275, 289, 0, 0, 0, 0, 175, 288, 0, 0, 0, 0, 96, 227, 0, 0, 0, 0, 129, 142, 0, 0, 0, 0, 215, 103, 0, 0, 0, 0, 332, 75, 0, 0, 0, 0, 493, 67, 0, 0, 0, 0, 712, 75, 0, 0, 0, 0, 807, 78, 0, 0, 0, 0, 932, 121, 0, 0, 0, 0, 958, 213, 0, 0, 0, 0, 967, 303, 0, 0, 0, 0, 942, 394, 0, 0, 0, 0, 861, 454)
+}
+point_count = 18
+
+[sub_resource type="Animation" id="Animation_huwol"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_f76oe"]
+resource_name = "opponent1movement"
+length = 20.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0, 1050.0, 1100.0, 1150.0, 1200.0, 1250.0, 1300.0, 1350.0, 1400.0, 1450.0, 1500.0, 1550.0, 1600.0, 1650.0, 1700.0, 1750.0, 1800.0, 1850.0, 1900.0, 1950.0, 2000.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b3fga"]
+_data = {
+"RESET": SubResource("Animation_huwol"),
+"opponent1movement": SubResource("Animation_f76oe")
+}
+
+[sub_resource type="Curve2D" id="Curve2D_xtoff"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 605, 591, 0, 0, 0, 0, 610, 357, 0, 0, 0, 0, 583, 267, 0, 0, 0, 0, 505, 242, 0, 0, 0, 0, 420, 248, 0, 0, 0, 0, 288, 242, 0, 0, 0, 0, 215, 232, 0, 0, 0, 0, 215, 153, 0, 0, 0, 0, 277, 135, 0, 0, 0, 0, 734, 142, 0, 0, 0, 0, 753, 262, 0, 0, 0, 0, 770, 342, 0, 0, 0, 0, 861, 448)
+}
+point_count = 13
+
+[sub_resource type="Animation" id="Animation_ru20c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_lbt3g"]
+resource_name = "opponent_2_movement"
+length = 20.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 82.2277, 164.455, 246.683, 328.911, 411.138, 493.366, 575.594, 657.821, 740.049, 822.277, 904.504, 986.732, 1068.96, 1151.19, 1233.42, 1315.64, 1397.87, 1480.1, 1562.33, 1644.55]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_08nlg"]
+_data = {
+"RESET": SubResource("Animation_ru20c"),
+"opponent_2_movement": SubResource("Animation_lbt3g")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_apppe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fvgqa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0r7nj"]
+
+[node name="level2" type="Node2D"]
+script = ExtResource("1_kkvan")
+small_enemy_value = 20
+opponent_escape_value = 50
+
+[node name="player" parent="." instance=ExtResource("1_2gn1b")]
+position = Vector2(565, 600)
+
+[node name="wall" parent="." instance=ExtResource("2_f77kn")]
+position = Vector2(450, 500)
+scale = Vector2(1, 20)
+
+[node name="wall2" parent="." instance=ExtResource("2_f77kn")]
+position = Vector2(675, 430)
+scale = Vector2(1, 30)
+
+[node name="wall8" parent="." instance=ExtResource("2_f77kn")]
+position = Vector2(1045, 280)
+scale = Vector2(1, 30)
+
+[node name="wall3" parent="." instance=ExtResource("2_f77kn")]
+position = Vector2(565, 670)
+rotation = 1.5708
+scale = Vector2(1, 15)
+
+[node name="wall9" parent="." instance=ExtResource("2_f77kn")]
+position = Vector2(860, 510)
+rotation = 1.5708
+scale = Vector2(1, 22)
+
+[node name="wall4" parent="." instance=ExtResource("2_f77kn")]
+position = Vector2(240, 350)
+rotation = 1.5708
+scale = Vector2(1, 25)
+
+[node name="wall5" parent="." instance=ExtResource("2_f77kn")]
+position = Vector2(465, 200)
+rotation = 1.5708
+scale = Vector2(1, 25)
+
+[node name="wall7" parent="." instance=ExtResource("2_f77kn")]
+position = Vector2(550, 30)
+rotation = 1.5708
+scale = Vector2(1, 63)
+
+[node name="wall6" parent="." instance=ExtResource("2_f77kn")]
+position = Vector2(50, 180)
+scale = Vector2(1, 20)
+
+[node name="goal" parent="." instance=ExtResource("3_ctnsv")]
+position = Vector2(860, 450)
+
+[node name="level_failed" parent="." instance=ExtResource("5_sedbm")]
+offset_left = 770.0
+offset_top = 120.0
+offset_right = 960.0
+offset_bottom = 195.0
+
+[node name="level_completed" parent="." instance=ExtResource("4_oj5uh")]
+offset_left = 670.0
+offset_top = 120.0
+offset_right = 1047.0
+offset_bottom = 195.0
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_qu41w")
+
+[node name="Opponent1Path" type="PathFollow2D" parent="Path2D"]
+position = Vector2(523, 588)
+rotation = -1.5708
+script = ExtResource("6_54pn4")
+
+[node name="opponent" parent="Path2D/Opponent1Path" groups=["opponent"] instance=ExtResource("6_c2ruq")]
+script = ExtResource("8_rpnvx")
+
+[node name="Opponent1AnimPlayer" type="AnimationPlayer" parent="Path2D/Opponent1Path"]
+libraries = {
+"": SubResource("AnimationLibrary_b3fga")
+}
+speed_scale = 2.0
+
+[node name="Path2D2" type="Path2D" parent="."]
+curve = SubResource("Curve2D_xtoff")
+
+[node name="Opponent2Path" type="PathFollow2D" parent="Path2D2"]
+position = Vector2(605, 591)
+rotation = -1.54943
+script = ExtResource("8_t31xe")
+
+[node name="opponent" parent="Path2D2/Opponent2Path" groups=["opponent"] instance=ExtResource("6_c2ruq")]
+script = ExtResource("10_6iqmq")
+
+[node name="Opponent2AnimPlayer" type="AnimationPlayer" parent="Path2D2/Opponent2Path"]
+libraries = {
+"": SubResource("AnimationLibrary_08nlg")
+}
+speed_scale = 2.0
+
+[node name="Spikes" type="Area2D" parent="."]
+position = Vector2(320, 115)
+script = ExtResource("9_wwotq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spikes"]
+scale = Vector2(6, 6)
+shape = SubResource("RectangleShape2D_apppe")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spikes"]
+texture_filter = 1
+scale = Vector2(7.5, 7.5)
+texture = ExtResource("13_fxn4m")
+
+[node name="Spikes2" type="Area2D" parent="."]
+position = Vector2(500, 115)
+script = ExtResource("9_wwotq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spikes2"]
+scale = Vector2(6, 6)
+shape = SubResource("RectangleShape2D_apppe")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spikes2"]
+texture_filter = 1
+scale = Vector2(7.5, 7.5)
+texture = ExtResource("13_fxn4m")
+
+[node name="Button" type="Area2D" parent="."]
+position = Vector2(350, 225)
+script = ExtResource("11_463dq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Button"]
+shape = SubResource("RectangleShape2D_fvgqa")
+
+[node name="Sprite2D" type="Sprite2D" parent="Button"]
+texture_filter = 1
+texture = ExtResource("15_5vnj5")
+
+[node name="Button2" type="Area2D" parent="."]
+position = Vector2(400, 175)
+script = ExtResource("11_463dq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Button2"]
+shape = SubResource("RectangleShape2D_fvgqa")
+
+[node name="Sprite2D" type="Sprite2D" parent="Button2"]
+texture_filter = 1
+texture = ExtResource("15_5vnj5")
+
+[node name="EnemySpawner" parent="." instance=ExtResource("16_4syhj")]
+z_index = -1
+
+[node name="enemy" parent="." node_paths=PackedStringArray("opponent", "player") instance=ExtResource("15_i5nk2")]
+visible = false
+position = Vector2(720, 400)
+script = ExtResource("16_n7c4d")
+opponent = NodePath("../Path2D2/Opponent2Path/opponent")
+player = NodePath("../player")
+speed = 2
+
+[node name="enemy2" parent="." node_paths=PackedStringArray("opponent", "player") instance=ExtResource("15_i5nk2")]
+visible = false
+position = Vector2(970, 125)
+script = ExtResource("16_n7c4d")
+opponent = NodePath("../Path2D/Opponent1Path/opponent")
+player = NodePath("../player")
+speed = 2
+
+[node name="score" type="Label" parent="."]
+offset_top = 390.0
+offset_right = 63.0
+offset_bottom = 413.0
+text = "Puntos: "
+
+[node name="audio_text" type="Label" parent="."]
+offset_top = 366.0
+offset_right = 110.0
+offset_bottom = 389.0
+text = "Sonido(m): Activo
+"
+
+[node name="help_text_2" type="Label" parent="."]
+offset_top = 500.0
+offset_right = 40.0
+offset_bottom = 523.0
+text = "Esos son tus oponentes, pero ayudarlos a escapar
+te dará puntos adicionales."
+script = ExtResource("19_jx7aw")
+
+[node name="InstructionsChangeTrigger" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstructionsChangeTrigger"]
+position = Vector2(450, 275)
+scale = Vector2(1, 6.5)
+shape = SubResource("RectangleShape2D_0r7nj")
+
+[node name="InstructionsChangeTrigger2" type="Area2D" parent="."]
+position = Vector2(150, -160)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstructionsChangeTrigger2"]
+position = Vector2(450, 275)
+scale = Vector2(1, 6.5)
+shape = SubResource("RectangleShape2D_0r7nj")
+
+[node name="wire" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(350, 192)
+rotation = 1.5708
+texture = ExtResource("20_ypnp5")
+
+[node name="wire2" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(432, 177)
+texture = ExtResource("20_ypnp5")
+
+[node name="opponent_death_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("21_j56my")
+
+[node name="small_enemy_death_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("22_4kwq2")
+
+[node name="level_completed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("23_4svhd")
+
+[node name="level_failed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("24_ffaxf")
+
+[connection signal="death" from="player" to="." method="_on_player_death"]
+[connection signal="spawnerContact" from="player" to="enemy" method="_on_player_spawner_contact"]
+[connection signal="spawnerContact" from="player" to="enemy2" method="_on_player_spawner_contact"]
+[connection signal="body_entered" from="goal" to="." method="_on_goal_body_entered"]
+[connection signal="body_entered" from="goal" to="Path2D/Opponent1Path/opponent" method="_on_goal_body_entered"]
+[connection signal="body_entered" from="goal" to="Path2D2/Opponent2Path/opponent" method="_on_goal_body_entered"]
+[connection signal="dead" from="Path2D/Opponent1Path/opponent" to="." method="_on_opponent_dead"]
+[connection signal="gone" from="Path2D/Opponent1Path/opponent" to="." method="_on_opponent_gone"]
+[connection signal="gone" from="Path2D/Opponent1Path/opponent" to="enemy" method="_on_opponent_gone"]
+[connection signal="spawnerContact" from="Path2D/Opponent1Path/opponent" to="enemy" method="_on_opponent_spawner_contact"]
+[connection signal="spawnerContact" from="Path2D/Opponent1Path/opponent" to="enemy2" method="_on_opponent_spawner_contact"]
+[connection signal="dead" from="Path2D2/Opponent2Path/opponent" to="." method="_on_opponent_dead"]
+[connection signal="gone2" from="Path2D2/Opponent2Path/opponent" to="." method="_on_opponent_gone_2"]
+[connection signal="gone2" from="Path2D2/Opponent2Path/opponent" to="Path2D/Opponent1Path/opponent" method="_on_opponent_gone_2"]
+[connection signal="gone2" from="Path2D2/Opponent2Path/opponent" to="enemy" method="_on_opponent_gone_2"]
+[connection signal="gone2" from="Path2D2/Opponent2Path/opponent" to="enemy2" method="_on_opponent_gone_2"]
+[connection signal="spawnerContact" from="Path2D2/Opponent2Path/opponent" to="enemy" method="_on_opponent_spawner_contact"]
+[connection signal="body_entered" from="Spikes" to="player" method="_on_spikes_body_entered"]
+[connection signal="body_entered" from="Spikes" to="Path2D/Opponent1Path/opponent" method="_on_spikes_body_entered"]
+[connection signal="body_entered" from="Spikes" to="Path2D2/Opponent2Path/opponent" method="_on_spikes_body_entered"]
+[connection signal="body_entered" from="Spikes2" to="player" method="_on_spikes_2_body_entered"]
+[connection signal="body_entered" from="Spikes2" to="Path2D/Opponent1Path/opponent" method="_on_spikes_2_body_entered"]
+[connection signal="body_entered" from="Spikes2" to="Path2D2/Opponent2Path/opponent" method="_on_spikes_2_body_entered"]
+[connection signal="body_entered" from="Button" to="Spikes" method="_on_button_body_entered"]
+[connection signal="body_entered" from="Button2" to="Spikes2" method="_on_button_2_body_entered"]
+[connection signal="body_entered" from="EnemySpawner" to="enemy" method="_on_enemy_spawner_body_entered"]
+[connection signal="body_entered" from="EnemySpawner" to="enemy2" method="_on_enemy_spawner_body_entered"]
+[connection signal="give_score" from="enemy" to="." method="_on_enemy_give_score"]
+[connection signal="give_score" from="enemy2" to="." method="_on_enemy_2_give_score"]
+[connection signal="body_entered" from="InstructionsChangeTrigger" to="help_text_2" method="_on_instructions_change_trigger_body_entered"]
+[connection signal="body_entered" from="InstructionsChangeTrigger2" to="help_text_2" method="_on_instructions_change_trigger_2_body_entered"]
+
+[editable path="player"]
+[editable path="wall"]
+[editable path="wall2"]
+[editable path="wall8"]
+[editable path="wall3"]
+[editable path="wall9"]
+[editable path="wall4"]
+[editable path="wall5"]
+[editable path="wall7"]
+[editable path="wall6"]
+[editable path="goal"]
+[editable path="Path2D/Opponent1Path/opponent"]
+[editable path="Path2D2/Opponent2Path/opponent"]
+[editable path="EnemySpawner"]
+[editable path="enemy"]
+[editable path="enemy2"]

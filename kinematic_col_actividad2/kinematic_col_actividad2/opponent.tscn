@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cj2htwf841733"]
+
+[ext_resource type="Texture2D" uid="uid://bk1y1vjxne5l0" path="res://opponent_sprite.png" id="1_jxusn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_viyos"]
+
+[node name="opponent" type="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_viyos")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+rotation = 1.5708
+texture = ExtResource("1_jxusn")

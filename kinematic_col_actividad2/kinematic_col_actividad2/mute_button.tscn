@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://yie6hqjkv2bx"]
+
+[ext_resource type="Texture2D" uid="uid://xlgnal526opc" path="res://player/player.png" id="1_ge6ts"]
+[ext_resource type="Texture2D" uid="uid://ckvaonklhqpw5" path="res://obstacle.png" id="2_8f0aq"]
+
+[node name="TextureButton" type="TextureButton"]
+offset_left = 851.0
+offset_top = 286.0
+offset_right = 891.0
+offset_bottom = 326.0
+toggle_mode = true
+texture_normal = ExtResource("1_ge6ts")
+texture_pressed = ExtResource("2_8f0aq")

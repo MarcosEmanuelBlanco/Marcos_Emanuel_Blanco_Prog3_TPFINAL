@@ -1,0 +1,282 @@
+[gd_scene load_steps=21 format=3 uid="uid://nc6yucbw3brk"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_0ruxo"]
+[ext_resource type="PackedScene" uid="uid://bgx3rlc5xbaxu" path="res://player/player.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://qw8f6uvj1m4v" path="res://box.tscn" id="4_g135o"]
+[ext_resource type="PackedScene" uid="uid://6kxukrvgum7s" path="res://wall.tscn" id="5_negbg"]
+[ext_resource type="PackedScene" uid="uid://cgre4vurhqs34" path="res://enemy.tscn" id="5_ujofh"]
+[ext_resource type="PackedScene" uid="uid://bpmfw6yc7cxu5" path="res://goal.tscn" id="7_e8ugp"]
+[ext_resource type="Script" path="res://path_follow_2d.gd" id="8_fumaq"]
+[ext_resource type="PackedScene" uid="uid://g8jqxn4gc4c0" path="res://level_completed.tscn" id="9_dtw4o"]
+[ext_resource type="PackedScene" uid="uid://bilhyhxgn8vtb" path="res://level_failed.tscn" id="10_45f4g"]
+[ext_resource type="Texture2D" uid="uid://lib3eubxddqj" path="res://metal_wall_sprite.png" id="11_cay5p"]
+[ext_resource type="Script" path="res://help_text.gd" id="12_njfnd"]
+[ext_resource type="AudioStream" uid="uid://c4f4y78cxrkgg" path="res://cute-level-up-3-189853.mp3" id="13_eomx5"]
+[ext_resource type="AudioStream" uid="uid://n1tc6w3qk0ei" path="res://retro-explode-2-236688.mp3" id="13_lnfnk"]
+[ext_resource type="AudioStream" uid="uid://ff6ohslpt0om" path="res://vinyl-stop-sound-effect-241388.mp3" id="14_25wai"]
+
+[sub_resource type="Curve2D" id="Curve2D_g8glq"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 96, 87, 0, 0, 0, 0, 227, 85)
+}
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3vip5"]
+
+[sub_resource type="Animation" id="Animation_7i5rs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_wclld"]
+resource_name = "movement"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 100.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_li7s5"]
+_data = {
+"RESET": SubResource("Animation_7i5rs"),
+"movement": SubResource("Animation_wclld")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c0jjp"]
+
+[node name="game" type="Node2D"]
+script = ExtResource("1_0ruxo")
+small_enemy_value = 10
+
+[node name="player" parent="." instance=ExtResource("2")]
+position = Vector2(-250, 460)
+motion_mode = 1
+floor_stop_on_slope = false
+floor_block_on_wall = false
+floor_max_angle = 3.14159
+platform_wall_layers = 1
+safe_margin = 1.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(108.528, 242.682)
+
+[node name="box" parent="." groups=["box"] instance=ExtResource("4_g135o")]
+position = Vector2(-119, 444)
+
+[node name="box2" parent="." groups=["box"] instance=ExtResource("4_g135o")]
+position = Vector2(-119, 416)
+
+[node name="box3" parent="." groups=["box"] instance=ExtResource("4_g135o")]
+position = Vector2(-1, 471)
+
+[node name="box4" parent="." groups=["box"] instance=ExtResource("4_g135o")]
+position = Vector2(-1, 501)
+
+[node name="wall" parent="." instance=ExtResource("5_negbg")]
+position = Vector2(60, 175)
+scale = Vector2(1, 28)
+
+[node name="wall9" parent="." instance=ExtResource("5_negbg")]
+position = Vector2(150, -45)
+rotation = 1.5708
+scale = Vector2(1, 12.5)
+
+[node name="wall12" parent="." instance=ExtResource("5_negbg")]
+position = Vector2(-320, 459)
+scale = Vector2(1, 10)
+
+[node name="wall10" parent="." instance=ExtResource("5_negbg")]
+position = Vector2(-130, 389)
+rotation = 1.5708
+scale = Vector2(1, 22.5)
+
+[node name="wall11" parent="." instance=ExtResource("5_negbg")]
+position = Vector2(-40, 529)
+rotation = 1.5708
+scale = Vector2(1, 33.5)
+
+[node name="wall2" parent="." instance=ExtResource("5_negbg")]
+position = Vector2(240, 250)
+scale = Vector2(1, 36)
+
+[node name="enemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_ujofh")]
+position = Vector2(118, 423)
+rotation = 1.44247
+scale = Vector2(0.999996, 0.999996)
+player = NodePath("../player")
+
+[node name="enemy2" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_ujofh")]
+position = Vector2(127, 493)
+rotation = 1.44247
+scale = Vector2(0.999996, 0.999996)
+player = NodePath("../player")
+
+[node name="goal" parent="." instance=ExtResource("7_e8ugp")]
+
+[node name="level_completed" parent="." instance=ExtResource("9_dtw4o")]
+offset_left = -350.0
+offset_top = 0.0
+offset_right = 27.0
+offset_bottom = 75.0
+
+[node name="level_failed" parent="." instance=ExtResource("10_45f4g")]
+offset_left = -300.0
+offset_top = 0.0
+offset_bottom = 75.0
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_g8glq")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(96, 87)
+rotation = -0.015266
+script = ExtResource("8_fumaq")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Path2D/PathFollow2D"]
+scale = Vector2(1.5, 1.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/CharacterBody2D"]
+shape = SubResource("RectangleShape2D_3vip5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Path2D/PathFollow2D/CharacterBody2D"]
+texture_filter = 1
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("11_cay5p")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Path2D/PathFollow2D"]
+libraries = {
+"": SubResource("AnimationLibrary_li7s5")
+}
+speed_scale = 0.7
+
+[node name="Path2D3" type="Path2D" parent="."]
+position = Vector2(0, 188)
+curve = SubResource("Curve2D_g8glq")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D3"]
+position = Vector2(96, 87)
+rotation = -0.015266
+script = ExtResource("8_fumaq")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Path2D3/PathFollow2D"]
+scale = Vector2(1.5, 1.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D3/PathFollow2D/CharacterBody2D"]
+shape = SubResource("RectangleShape2D_3vip5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Path2D3/PathFollow2D/CharacterBody2D"]
+texture_filter = 1
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("11_cay5p")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Path2D3/PathFollow2D"]
+libraries = {
+"": SubResource("AnimationLibrary_li7s5")
+}
+speed_scale = 0.7
+
+[node name="Path2D2" type="Path2D" parent="."]
+position = Vector2(304, 267)
+rotation = 3.14159
+curve = SubResource("Curve2D_g8glq")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D2"]
+position = Vector2(96, 87)
+rotation = -0.015266
+script = ExtResource("8_fumaq")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Path2D2/PathFollow2D"]
+scale = Vector2(1.5, 1.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D2/PathFollow2D/CharacterBody2D"]
+shape = SubResource("RectangleShape2D_3vip5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Path2D2/PathFollow2D/CharacterBody2D"]
+texture_filter = 1
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("11_cay5p")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Path2D2/PathFollow2D"]
+libraries = {
+"": SubResource("AnimationLibrary_li7s5")
+}
+speed_scale = 0.7
+
+[node name="score" type="Label" parent="."]
+offset_left = -450.0
+offset_top = -50.0
+offset_right = -387.0
+offset_bottom = -27.0
+text = "Puntos: "
+
+[node name="audio_text" type="Label" parent="."]
+offset_left = -453.0
+offset_top = -77.0
+offset_right = -343.0
+offset_bottom = -54.0
+text = "Sonido(m): Activo"
+
+[node name="InstructionsChangeTrigger" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstructionsChangeTrigger"]
+position = Vector2(150, 350)
+scale = Vector2(8, 1)
+shape = SubResource("RectangleShape2D_c0jjp")
+
+[node name="help_text" type="Label" parent="."]
+offset_left = -350.0
+offset_top = 250.0
+offset_right = -310.0
+offset_bottom = 273.0
+text = "El movimiento es con las flechas y el disparo con
+el click izquierdo."
+script = ExtResource("12_njfnd")
+
+[node name="small_enemy_death_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_lnfnk")
+
+[node name="level_completed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_eomx5")
+
+[node name="level_failed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_25wai")
+
+[connection signal="death" from="player" to="." method="_on_player_death"]
+[connection signal="death" from="player" to="enemy" method="_on_player_death"]
+[connection signal="give_score" from="enemy" to="." method="_on_enemy_give_score"]
+[connection signal="give_score" from="enemy2" to="." method="_on_enemy_2_give_score"]
+[connection signal="body_entered" from="goal" to="." method="_on_goal_body_entered"]
+[connection signal="body_entered" from="InstructionsChangeTrigger" to="help_text" method="_on_instructions_change_trigger_body_entered"]
+
+[editable path="player"]
+[editable path="box"]
+[editable path="box2"]
+[editable path="box3"]
+[editable path="box4"]
+[editable path="wall"]
+[editable path="wall9"]
+[editable path="wall12"]
+[editable path="wall10"]
+[editable path="wall11"]
+[editable path="wall2"]
+[editable path="enemy"]
+[editable path="enemy2"]
+[editable path="goal"]

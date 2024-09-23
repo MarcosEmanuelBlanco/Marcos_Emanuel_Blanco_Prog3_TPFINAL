@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://bd7he37qq2i66"]
+
+[ext_resource type="Script" path="res://main_menu.gd" id="1_etwrp"]
+[ext_resource type="AudioStream" uid="uid://b5eatd8u5q6c6" path="res://follow-the-wind-loop-version-230305.mp3" id="2_vlsbk"]
+[ext_resource type="Texture2D" uid="uid://cnn2r4ir1mskq" path="res://background_sprite.png" id="4_cvj38"]
+[ext_resource type="Texture2D" uid="uid://dcysnbukiv0fe" path="res://goal_sprite.png" id="5_hpsm3"]
+[ext_resource type="Texture2D" uid="uid://d2hb5hwveoum5" path="res://background_enemy_sprite.png" id="6_7w75p"]
+
+[node name="main_menu" type="Node2D"]
+script = ExtResource("1_etwrp")
+
+[node name="title" type="Label" parent="."]
+offset_left = 350.0
+offset_top = 238.0
+offset_right = 463.0
+offset_bottom = 261.0
+scale = Vector2(4, 4)
+text = "El Gran Escape"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="press_enter" type="Label" parent="."]
+offset_left = 370.0
+offset_top = 344.0
+offset_right = 575.0
+offset_bottom = 367.0
+scale = Vector2(2, 2)
+text = "Presiona ENTER para jugar"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_vlsbk")
+autoplay = true
+
+[node name="audio_text" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+scale = Vector2(3, 3)
+text = "Sonido: Activo"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(458, 518)
+texture = ExtResource("4_cvj38")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(868, 521)
+scale = Vector2(8, 8)
+texture = ExtResource("5_hpsm3")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(134, 517)
+texture = ExtResource("6_7w75p")

@@ -1,0 +1,160 @@
+[gd_scene load_steps=19 format=3 uid="uid://iukix0jmob77"]
+
+[ext_resource type="Script" path="res://level_4.gd" id="1_l54m4"]
+[ext_resource type="PackedScene" uid="uid://bgx3rlc5xbaxu" path="res://player/player.tscn" id="1_vlof4"]
+[ext_resource type="PackedScene" uid="uid://6kxukrvgum7s" path="res://wall.tscn" id="2_vl18g"]
+[ext_resource type="PackedScene" uid="uid://dlf21ej52fq75" path="res://big_enemy.tscn" id="4_34gqd"]
+[ext_resource type="Script" path="res://breakable_wall.gd" id="5_64w7g"]
+[ext_resource type="PackedScene" uid="uid://bpmfw6yc7cxu5" path="res://goal.tscn" id="5_ulqs5"]
+[ext_resource type="PackedScene" uid="uid://d11xg3chutt1s" path="res://breakable_wall.tscn" id="6_7dntp"]
+[ext_resource type="Texture2D" uid="uid://dmuuuj2jjwffb" path="res://force_field_sprite.png" id="7_rxqi3"]
+[ext_resource type="PackedScene" uid="uid://bpmhh5xcp8p8x" path="res://damage_pickup.tscn" id="8_mwvb0"]
+[ext_resource type="PackedScene" uid="uid://dy6v7kqtiyiub" path="res://big_enemy_trigger.tscn" id="10_23rbs"]
+[ext_resource type="PackedScene" uid="uid://g8jqxn4gc4c0" path="res://level_completed.tscn" id="11_b5vk0"]
+[ext_resource type="PackedScene" uid="uid://bilhyhxgn8vtb" path="res://level_failed.tscn" id="12_32yn4"]
+[ext_resource type="Script" path="res://help_text_4.gd" id="13_pd0u5"]
+[ext_resource type="AudioStream" uid="uid://b7sbon7vwpgd0" path="res://glass-breaking-sound-effect-240679.mp3" id="14_gifu0"]
+[ext_resource type="AudioStream" uid="uid://0ckglbqoud3p" path="res://creature-or-monster-growl-sound-effect-1-239698.mp3" id="15_q3tr2"]
+[ext_resource type="AudioStream" uid="uid://c4f4y78cxrkgg" path="res://cute-level-up-3-189853.mp3" id="16_75vbl"]
+[ext_resource type="AudioStream" uid="uid://ff6ohslpt0om" path="res://vinyl-stop-sound-effect-241388.mp3" id="17_p6i26"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h451e"]
+
+[node name="level4" type="Node2D"]
+script = ExtResource("1_l54m4")
+big_enemy_value = 100
+
+[node name="player" parent="." instance=ExtResource("1_vlof4")]
+position = Vector2(600, 600)
+
+[node name="wall" parent="." instance=ExtResource("2_vl18g")]
+position = Vector2(600, 650)
+rotation = 1.5708
+
+[node name="wall2" parent="." instance=ExtResource("2_vl18g")]
+position = Vector2(533, 460)
+scale = Vector2(1, 25)
+
+[node name="wall3" parent="." instance=ExtResource("2_vl18g")]
+position = Vector2(668, 340)
+scale = Vector2(1, 40)
+
+[node name="wall4" parent="." instance=ExtResource("2_vl18g")]
+position = Vector2(343, 248)
+rotation = 1.5708
+scale = Vector2(1, 25)
+
+[node name="wall5" parent="." instance=ExtResource("2_vl18g")]
+position = Vector2(400, 30)
+rotation = 1.5708
+scale = Vector2(1, 32)
+
+[node name="wall6" parent="." instance=ExtResource("2_vl18g")]
+position = Vector2(130, 140)
+scale = Vector2(1, 15)
+
+[node name="BigEnemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_34gqd")]
+player = NodePath("../player")
+speed = 3
+
+[node name="BreakableWall" parent="." instance=ExtResource("6_7dntp")]
+
+[node name="BreakableWall2" type="CharacterBody2D" parent="." groups=["breakable_wall"]]
+position = Vector2(600, 400)
+scale = Vector2(3, 1)
+script = ExtResource("5_64w7g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BreakableWall2"]
+shape = SubResource("RectangleShape2D_h451e")
+
+[node name="Sprite2D" type="Sprite2D" parent="BreakableWall2"]
+texture_filter = 1
+texture = ExtResource("7_rxqi3")
+
+[node name="BreakableWall3" type="CharacterBody2D" parent="." groups=["breakable_wall"]]
+position = Vector2(600, 350)
+scale = Vector2(3, 1)
+script = ExtResource("5_64w7g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BreakableWall3"]
+shape = SubResource("RectangleShape2D_h451e")
+
+[node name="Sprite2D" type="Sprite2D" parent="BreakableWall3"]
+texture_filter = 1
+texture = ExtResource("7_rxqi3")
+
+[node name="DamagePickup" parent="." instance=ExtResource("8_mwvb0")]
+
+[node name="goal" parent="." instance=ExtResource("5_ulqs5")]
+position = Vector2(180, 140)
+
+[node name="BigEnemyTrigger" parent="." instance=ExtResource("10_23rbs")]
+
+[node name="level_completed" parent="." instance=ExtResource("11_b5vk0")]
+offset_left = 400.0
+offset_top = 100.0
+offset_right = 641.0
+offset_bottom = 201.0
+
+[node name="level_failed" parent="." instance=ExtResource("12_32yn4")]
+offset_left = 430.0
+offset_top = 100.0
+offset_right = 620.0
+offset_bottom = 175.0
+
+[node name="score" type="Label" parent="."]
+offset_top = 25.0
+offset_right = 63.0
+offset_bottom = 48.0
+text = "Puntos: "
+
+[node name="audio_text" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Sonido(m): Activo"
+
+[node name="help_text_4" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 400.0
+offset_right = 411.0
+offset_bottom = 449.0
+text = "A esas barreras solo podrás romperlas
+aprovechando ese potenciador de daño.
+Activalo con ESPACIO."
+script = ExtResource("13_pd0u5")
+
+[node name="force_field_break_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_gifu0")
+
+[node name="big_enemy_death_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_q3tr2")
+
+[node name="level_completed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_75vbl")
+
+[node name="level_failed_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_p6i26")
+
+[connection signal="death" from="player" to="." method="_on_player_death"]
+[connection signal="give_score" from="BigEnemy" to="." method="_on_big_enemy_give_score"]
+[connection signal="destroyed" from="BreakableWall" to="." method="_on_breakable_wall_destroyed"]
+[connection signal="destroyed" from="BreakableWall2" to="." method="_on_breakable_wall_2_destroyed"]
+[connection signal="destroyed" from="BreakableWall3" to="." method="_on_breakable_wall_3_destroyed"]
+[connection signal="body_entered" from="DamagePickup" to="player" method="_on_damage_pickup_body_entered"]
+[connection signal="body_entered" from="goal" to="." method="_on_goal_body_entered"]
+[connection signal="body_entered" from="BigEnemyTrigger" to="BigEnemy" method="_on_big_enemy_trigger_body_entered"]
+[connection signal="body_entered" from="BigEnemyTrigger" to="BigEnemyTrigger" method="_on_body_entered"]
+[connection signal="body_entered" from="BigEnemyTrigger" to="help_text_4" method="_on_big_enemy_trigger_body_entered"]
+
+[editable path="player"]
+[editable path="wall"]
+[editable path="wall2"]
+[editable path="wall3"]
+[editable path="wall4"]
+[editable path="wall5"]
+[editable path="wall6"]
+[editable path="BigEnemy"]
+[editable path="BreakableWall"]
+[editable path="DamagePickup"]
+[editable path="goal"]
+[editable path="BigEnemyTrigger"]

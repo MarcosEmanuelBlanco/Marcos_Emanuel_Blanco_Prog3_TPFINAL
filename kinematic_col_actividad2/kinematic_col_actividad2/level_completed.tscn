@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://g8jqxn4gc4c0"]
+
+[node name="level_completed" type="Label"]
+visible = false
+offset_left = -198.0
+offset_top = 2.0
+offset_right = -71.0
+offset_bottom = 25.0
+text = "Nivel Completado
+
+Presiona ENTER para continuar
+o R para reiniciar"
+horizontal_alignment = 1
